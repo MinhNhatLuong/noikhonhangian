@@ -16,6 +16,8 @@ spring:
 
 jwt:
   secret-key: LBnrKcXH4pe1xhsCDCbaqbsLFD01Z/yEqnM8llt4HDP2dnE3q+Hh+w77q40uauDNtI6XcaG4rHJkcGcTU1FHdR05W0b2DH6dYQ3KmmgQWJ8=
+  expiration: 86400000
+  REFRESHABLE_DURATION: 604800000
 
 eureka:
   client:

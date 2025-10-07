@@ -1,6 +1,8 @@
 server:
   port: 8080
 
+app:
+  prefix: /api
 
 spring:
   application:
@@ -12,11 +14,15 @@ spring:
         - id: user-service
           uri: lb://user-service
           predicates:
-            - Path=/users/**
+            - Path=${app.prefix}/users/**, ${app.prefix}/auth/**
+          filters:
+            - StripPrefix=1
         - id: order-service
           uri: lb://order-service
           predicates:
-            - Path=/orders/**
+            - Path=${app.prefix}/orders/**
+          filters:
+            - StripPrefix=1
 
 eureka:
   client:
