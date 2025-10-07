@@ -7,6 +7,8 @@ import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+import io.jsonwebtoken.io.Decoders;
+import lombok.experimental.NonFinal;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,10 @@ public class JwtServiceImpl implements JwtService {
 
     @Value("${jwt.secret-key}")
     private String secretKey;
+
+    @NonFinal
+    @Value("${jwt.refreshable-duration}")
+    protected long REFRESHABLE_DURATION;
 
     @Override
     public String generateAccessToken(User user) {
@@ -83,5 +89,24 @@ public class JwtServiceImpl implements JwtService {
         }
 
         return signedJWT.verify(new MACVerifier(secretKey));
+    }
+
+    public SignedJWT verifyToken(String token, boolean isRefresh) throws JOSEException, ParseException {
+        JWSVerifier verifier = new MACVerifier(secretKey);
+
+        SignedJWT signedJWT = SignedJWT.parse(token);
+
+        Date expiryTime = (isRefresh)
+                ? new Date(signedJWT.getJWTClaimsSet().getIssueTime()
+                .toInstant().plus(REFRESHABLE_DURATION, ChronoUnit.SECONDS).toEpochMilli())
+                : signedJWT.getJWTClaimsSet().getExpirationTime();
+
+        boolean verified = signedJWT.verify(verifier);
+
+        if (!(verified && expiryTime.after(new Date()))) {
+            throw new JOSEException("Token invalid or expired");
+        }
+
+        return signedJWT;
     }
 }

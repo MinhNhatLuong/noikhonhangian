@@ -1,10 +1,13 @@
 package com.example.userservice.controller;
 
+import com.example.userservice.dto.request.IntrospectRequest;
 import com.example.userservice.dto.request.LoginRequest;
+import com.example.userservice.dto.response.IntrospectResponse;
 import com.example.userservice.dto.response.LoginResponse;
 import com.example.userservice.dto.response.RestResponse;
 import com.example.userservice.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,5 +29,16 @@ public class AuthenticationController {
                 .statusCode(200)
                 .timestamp(LocalDateTime.now())
                 .build();
+    }
+    @PostMapping("/introspect")
+    public ResponseEntity<RestResponse<IntrospectResponse>> authenticate(@RequestBody IntrospectRequest request) {
+        var result = authenticationService.introspect(request);
+        return ResponseEntity.ok(
+                RestResponse.<IntrospectResponse>builder()
+                        .statusCode(200)
+                        .message("Introspect token successfully")
+                        .result(result)
+                        .build()
+        );
     }
 }
