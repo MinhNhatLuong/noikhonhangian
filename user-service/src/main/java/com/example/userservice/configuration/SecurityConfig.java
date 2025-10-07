@@ -59,7 +59,8 @@ public class SecurityConfig {
             "/swagger-ui.html", "/users/**"
     };
     private final UserDetailServiceCustomize userDetailServiceCustomize;
-    private final JwtDecoderConfig jwtDecoderConfig;
+    //    private final JwtDecoderConfig jwtDecoderConfig;
+    private final JwtDecoder jwtDecoder;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -69,7 +70,7 @@ public class SecurityConfig {
                         .requestMatchers(WHITE_LIST).permitAll()
                         .anyRequest().authenticated()
                 )
-                .oauth2ResourceServer((oauth2) -> oauth2.jwt(jwtConfigurer -> jwtConfigurer.decoder(jwtDecoderConfig)));
+                .oauth2ResourceServer((oauth2) -> oauth2.jwt(jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder)));
         return http.build();
     }
 
