@@ -1,6 +1,7 @@
 server:
   port: 8080
 
+
 spring:
   application:
     name: api-gateway
@@ -15,7 +16,7 @@ spring:
         - id: order-service
           uri: lb://order-service
           predicates:
-            - Path=/api/orders/**
+            - Path=/orders/**
 
 eureka:
   client:
