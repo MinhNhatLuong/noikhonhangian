@@ -54,7 +54,9 @@ import java.nio.charset.StandardCharsets;
 @RequiredArgsConstructor
 public class SecurityConfig {
     private static final String[] WHITE_LIST = {
-            "/auth/**"
+            "/auth/**", "/swagger-ui/**",
+            "/v3/api-docs/**",
+            "/swagger-ui.html", "/users/**"
     };
     private final UserDetailServiceCustomize userDetailServiceCustomize;
     private final JwtDecoderConfig jwtDecoderConfig;

@@ -31,6 +31,8 @@ public class JwtServiceImpl implements JwtService {
                 .subject(user.getUsername())
                 .issueTime(issueTime)
                 .expirationTime(expirationTime)
+                .claim("role", user.getRole().getRoleName())
+                .claim("id", user.getId())
                 .build();
 
         Payload payload = new Payload(jwtClaimsSet.toJSONObject());

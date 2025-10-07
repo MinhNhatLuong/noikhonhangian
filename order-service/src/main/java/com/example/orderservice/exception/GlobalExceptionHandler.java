@@ -1,6 +1,6 @@
 package com.example.orderservice.exception;
 
-import com.example.userservice.dto.response.RestResponse;
+import com.example.orderservice.dto.response.RestResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
