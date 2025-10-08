@@ -7,7 +7,9 @@ import com.example.orderservice.entity.Order;
 import com.example.orderservice.mapper.OrderMapper;
 import com.example.orderservice.repository.OrderRepository;
 import com.example.orderservice.service.OrderService;
+import com.example.orderservice.utils.JwtUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,13 +22,17 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public RestResponse<AddCartResponse> addOrder(AddCartRequest request) {
+        if (JwtUtils.getUserIdFromToken() == null) throw new BadCredentialsException("Invalid user ID");
         Order order = orderMapper.toOrderEntity(request);
+        order.setUserId(JwtUtils.getUserIdFromToken());
         orderRepository.save(order);
         return new RestResponse<AddCartResponse>(200, "Order created successfully!", orderMapper.toAddCartResponse(order));
     }
 
     @Override
     public RestResponse<List<AddCartResponse>> getCartsByUserId(Long userId) {
+        if (userId == null) throw new BadCredentialsException("Invalid user ID");
+
         List<AddCartResponse> orders = orderRepository.findByUserId(userId)
                 .stream()
                 .map(orderMapper::toAddCartResponse)

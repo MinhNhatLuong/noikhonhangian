@@ -13,4 +13,5 @@ public interface UserService {
     RestResponse<UserCreationResponse> createUser(UserCreationRequest request);
     RestResponse<List<UserCreationResponse>> getAllUsers();
     RestResponse<UserCreationResponse> getUserById(Integer id);
+    RestResponse<UserCreationResponse> getUserInfo();
 }

@@ -24,6 +24,11 @@ public class UserController {
     }
 
     @GetMapping
+    public RestResponse<UserCreationResponse> getUserInfo(){
+        return userService.getUserInfo();
+    }
+
+    @GetMapping("/all")
 //    @PreAuthorize("hasRole('Admin')")
     public RestResponse<List<UserCreationResponse>> getAllUsers(){
         return userService.getAllUsers();

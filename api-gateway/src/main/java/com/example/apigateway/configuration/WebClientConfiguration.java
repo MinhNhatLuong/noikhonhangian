@@ -16,18 +16,19 @@ import java.util.List;
 @Configuration
 public class WebClientConfiguration {
     @Bean
-    WebClient webClient(){
+    WebClient webClient() {
         return WebClient.builder()
                 .baseUrl("http://localhost:3979")
                 .build();
     }
 
     @Bean
-    CorsWebFilter corsWebFilter(){
+    CorsWebFilter corsWebFilter() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:3000"));
         corsConfiguration.setAllowedHeaders(List.of("*"));
         corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+        corsConfiguration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
         urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
@@ -36,7 +37,7 @@ public class WebClientConfiguration {
     }
 
     @Bean
-    IamClient iamClient(WebClient webClient){
+    IamClient iamClient(WebClient webClient) {
         HttpServiceProxyFactory httpServiceProxyFactory = HttpServiceProxyFactory
                 .builderFor(WebClientAdapter.create(webClient)).build();
 

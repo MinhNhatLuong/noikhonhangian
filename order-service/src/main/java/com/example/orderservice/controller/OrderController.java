@@ -4,6 +4,7 @@ import com.example.orderservice.dto.request.AddCartRequest;
 import com.example.orderservice.dto.response.AddCartResponse;
 import com.example.orderservice.dto.response.RestResponse;
 import com.example.orderservice.service.OrderService;
+import com.example.orderservice.serviceImpl.OrderServiceImpl;
 import com.example.orderservice.utils.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,16 +17,15 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class OrderController {
-    private final OrderService orderService;
+    private final OrderServiceImpl orderServiceImpl;
 
     @PostMapping
     public RestResponse<AddCartResponse> createOrder(@RequestBody AddCartRequest request) {
-        return orderService.addOrder(request);
+        return orderServiceImpl.addOrder(request);
     }
 
     @GetMapping
     public RestResponse<List<AddCartResponse>> listOrders() {
-        log.info("" + JwtUtils.getUserIdFromToken());
-        return orderService.getCartsByUserId(JwtUtils.getUserIdFromToken());
+        return orderServiceImpl.getCartsByUserId(JwtUtils.getUserIdFromToken());
     }
 }

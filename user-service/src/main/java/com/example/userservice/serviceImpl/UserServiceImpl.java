@@ -8,7 +8,9 @@ import com.example.userservice.mapper.UserMapper;
 import com.example.userservice.repository.RoleRepository;
 import com.example.userservice.repository.UserRepository;
 import com.example.userservice.service.UserService;
+import com.example.userservice.utils.JwtUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -50,6 +52,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public RestResponse<UserCreationResponse> getUserById(Integer id) {
         User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User with id " + id + " not found"));
+        return new RestResponse<UserCreationResponse>(200, "User found!", userMapper.toUserCreationResponse(user));
+    }
+
+    @Override
+    public RestResponse<UserCreationResponse> getUserInfo() {
+        if (JwtUtils.getUserIdFromToken() == null) {
+            throw new BadCredentialsException("Bad credentials");
+        }
+        User user = userRepository.findById(Math.toIntExact(JwtUtils.getUserIdFromToken()))
+                .orElseThrow(() -> new RuntimeException("User with id " + JwtUtils.getUserIdFromToken() + " not found"));
         return new RestResponse<UserCreationResponse>(200, "User found!", userMapper.toUserCreationResponse(user));
     }
 }
