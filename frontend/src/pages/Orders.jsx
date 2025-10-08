@@ -67,7 +67,7 @@ function Orders() {
       });
       if (response.result) {
         setOrderForm({ product: '', quantity: 1, price: '' });
-        fetchOrders(); // Reload orders after successful creation
+        fetchOrders();
       }
     } catch (err) {
       if (err.response && err.response.status === 401) {

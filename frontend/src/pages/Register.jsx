@@ -1,6 +1,15 @@
 import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import { authService } from '../services/api';
+
+// MUI
+import Container from '@mui/material/Container';
+import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
+import Link from '@mui/material/Link';
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -37,127 +46,70 @@ function Register() {
   };
 
   return (
-    <div style={styles.container}>
-      <div style={styles.formContainer}>
-        <h2 style={styles.title}>Đăng ký</h2>
-        {error && <div style={styles.error}>{error}</div>}
-        <form onSubmit={handleSubmit} style={styles.form}>
-          <div style={styles.inputGroup}>
-            <label htmlFor="username">Tên đăng nhập:</label>
-            <input
-              type="text"
-              id="username"
-              name="username"
-              value={formData.username}
-              onChange={handleChange}
-              style={styles.input}
-              required
-            />
-          </div>
-          <div style={styles.inputGroup}>
-            <label htmlFor="email">Email:</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              style={styles.input}
-              required
-            />
-          </div>
-          <div style={styles.inputGroup}>
-            <label htmlFor="password">Mật khẩu:</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              style={styles.input}
-              required
-            />
-          </div>
-          <div style={styles.inputGroup}>
-            <label htmlFor="fullName">Họ và tên:</label>
-            <input
-              type="text"
-              id="fullName"
-              name="fullName"
-              value={formData.fullName}
-              onChange={handleChange}
-              style={styles.input}
-              required
-            />
-          </div>
-          <button type="submit" style={styles.button}>
+    <Container maxWidth="xs" sx={{ mt: 8 }}>
+      <Paper sx={{ p: 3 }} elevation={3}>
+        <Typography variant="h5" align="center" gutterBottom>
+          Đăng ký
+        </Typography>
+
+        {error && (
+          <Typography color="error" align="center" sx={{ mb: 2 }}>
+            {error}
+          </Typography>
+        )}
+
+        <Box component="form" onSubmit={handleSubmit} noValidate>
+          <TextField
+            label="Tên đăng nhập"
+            name="username"
+            value={formData.username}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            required
+          />
+          <TextField
+            label="Email"
+            name="email"
+            type="email"
+            value={formData.email}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            required
+          />
+          <TextField
+            label="Mật khẩu"
+            name="password"
+            type="password"
+            value={formData.password}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            required
+          />
+          <TextField
+            label="Họ và tên"
+            name="fullName"
+            value={formData.fullName}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            required
+          />
+          <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
             Đăng ký
-          </button>
-        </form>
-        <p style={styles.loginLink}>
-          Đã có tài khoản? <Link to="/login">Đăng nhập</Link>
-        </p>
-      </div>
-    </div>
+          </Button>
+        </Box>
+
+        <Box textAlign="center" sx={{ mt: 2 }}>
+          <Link component={RouterLink} to="/login">
+            Đã có tài khoản? Đăng nhập
+          </Link>
+        </Box>
+      </Paper>
+    </Container>
   );
 }
-
-const styles = {
-  container: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    minHeight: '100vh',
-    backgroundColor: '#f5f5f5',
-  },
-  formContainer: {
-    backgroundColor: 'white',
-    padding: '2rem',
-    borderRadius: '8px',
-    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-    width: '100%',
-    maxWidth: '400px',
-  },
-  title: {
-    textAlign: 'center',
-    marginBottom: '2rem',
-    color: '#333',
-  },
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '1rem',
-  },
-  inputGroup: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '0.5rem',
-  },
-  input: {
-    padding: '0.5rem',
-    borderRadius: '4px',
-    border: '1px solid #ddd',
-    fontSize: '1rem',
-  },
-  button: {
-    padding: '0.75rem',
-    backgroundColor: '#007bff',
-    color: 'white',
-    border: 'none',
-    borderRadius: '4px',
-    fontSize: '1rem',
-    cursor: 'pointer',
-    marginTop: '1rem',
-  },
-  error: {
-    color: 'red',
-    marginBottom: '1rem',
-    textAlign: 'center',
-  },
-  loginLink: {
-    textAlign: 'center',
-    marginTop: '1rem',
-  },
-};
 
 export default Register;
