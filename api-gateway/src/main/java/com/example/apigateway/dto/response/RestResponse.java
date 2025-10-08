@@ -13,7 +13,7 @@ public class RestResponse<T> {
     private int statusCode;
     private String error;
     private Object message;
-    private T data;
+    private T result;
 
     public static <T> RestResponse<T> error(int status, String error, Object message) {
         return new RestResponse<>(status, error, message, null);

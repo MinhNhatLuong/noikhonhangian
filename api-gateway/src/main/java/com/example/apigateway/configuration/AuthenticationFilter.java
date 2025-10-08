@@ -83,12 +83,17 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
         log.info(("Token: " + token));
 
         return iamService.introspectToken(token).flatMap(introspectResponse -> {
-            if (introspectResponse.getData().isValid()) {
+            if (introspectResponse.getResult().isValid()) {
+                log.info("result: {}", introspectResponse);
                 return chain.filter(exchange);
             } else {
+                log.info("result: {}", introspectResponse);
                 return unauthorizedResponse(exchange.getResponse());
             }
-        }).onErrorResume(throwable -> unauthorizedResponse(exchange.getResponse()));
+        }).onErrorResume(throwable -> {
+            log.error("Error during introspection", throwable);
+            return unauthorizedResponse(exchange.getResponse());
+        });
 
     }
 
@@ -97,7 +102,7 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
                 .statusCode(HttpStatus.UNAUTHORIZED.value())
                 .error(HttpStatus.UNAUTHORIZED.getReasonPhrase())
                 .message("You are not authorized to access this resource")
-                .data(null)
+                .result(null)
                 .build();
 
         String body = null;
