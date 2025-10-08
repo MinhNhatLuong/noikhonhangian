@@ -41,7 +41,7 @@ import java.nio.charset.StandardCharsets;
 @RequiredArgsConstructor
 public class SecurityConfig {
     private static final String[] WHITE_LIST = {
-            "/orders/**", "/swagger-ui/**",
+            "/swagger-ui/**", "/orders/**",
             "/v3/api-docs/**",
             "/swagger-ui.html"
     };

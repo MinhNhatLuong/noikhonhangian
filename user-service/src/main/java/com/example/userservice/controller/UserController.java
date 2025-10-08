@@ -7,6 +7,7 @@ import com.example.userservice.mapper.UserMapper;
 import com.example.userservice.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class UserController {
     }
 
     @GetMapping
+//    @PreAuthorize("hasRole('Admin')")
     public RestResponse<List<UserCreationResponse>> getAllUsers(){
         return userService.getAllUsers();
     }
